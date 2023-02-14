@@ -18,8 +18,24 @@
 |
 */
 
+import { Response } from '@adonisjs/core/build/standalone'
+import HealthCheck from '@ioc:Adonis/Core/HealthCheck'
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.get('/', async ({ view }) => {
-  return view.render('welcome')
+// check db connection
+Route.get('health', async ({ response }) => {
+  const report = await HealthCheck.getReport()
+
+  return report.healthy ? response.ok(report) : response.badRequest(report)
 })
+
+Route.get('/', () => {
+  "Hello World"
+})
+
+Route.group(() => {
+  // registration logic
+  Route.post('register', 'Users/AuthController.register').as('register')
+  Route.post('login', 'Users/AuthController.login').as('login')
+  Route.post('logout', 'Users/AuthController.logout').as('logout')
+}).prefix('api/v1/users/')
