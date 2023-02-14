@@ -9,11 +9,20 @@ export default class User extends BaseModel {
   @column()
   public email: string
 
-  @column({ serializeAs: null })
-  public password: string
+  @column()
+  public username: string
 
   @column()
-  public rememberMeToken: string | null
+  public avatar: string
+
+  @column()
+  public isActivated: boolean = false
+
+  @column()
+  public email_verified_at: DateTime
+
+  @column({ serializeAs: null })
+  public password: string
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
